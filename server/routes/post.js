@@ -14,15 +14,18 @@ router.get('/allpost', (req,res)=>{
 
 router.post('/createpost',requireLogin,(req,res)=>{
     const{title, body} = req.body;
-    if(!title || !body){
-        return res.status(422).json({err: "Please add all the fields"})
+    //console.log(title, body, req.body.photo)
+    //return;
+    // console.log(req.body)
+    //console.log(req.body.title);
+    if(!req.body.photo){
+        return res.status(422).json({err: "Upload and Image to post"});
     }
-// console.log(req.user);
-// res.send("Ok")
     req.user.password = undefined;
     const post = new Post({
         title,
         body,
+        photo:req.body.photo,
         postedBy: req.user 
     })
     post.save().then((result)=>{
