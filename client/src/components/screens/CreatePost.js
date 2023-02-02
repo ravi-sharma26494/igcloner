@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import M from 'materialize-css';
 const CreatePost = () => {
@@ -6,23 +6,10 @@ const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
+  const [postimage, setPostImage] = useState("");
 
-  const postDetails = ()=>{
-    const data = new FormData();
-    data.append('file',image)
-    data.append('upload_preset',"instagramclone")
-    data.append('cloud_name',"ravisharma")
-    fetch("https://api.cloudinary.com/v1_1/ravisharma/image/upload",{
-      method:'post',
-      body:data
-    }).then((res)=> res.json())
-      .then(data=>{
-        //console.log(data);
-      setUrl(data.url)
-    }).catch((err)=> console.log(err));
-    
-       
+  useEffect(()=>{
+    if(postimage){
       fetch("/createpost", {
         method: "post",
         headers: {
@@ -32,14 +19,14 @@ const CreatePost = () => {
         body: JSON.stringify({
           title: title,
           body: body,
-          photo:url
+          pic:postimage
         })
       })
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data)
+          console.log(data)
           if(data.error){
-            M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+            return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
           } else{
             M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
             navigate('/')
@@ -48,6 +35,25 @@ const CreatePost = () => {
         .catch(err=>{
           console.log(err)
         })
+    }
+  },[postimage])   
+
+  const postDetails = async()=>{
+    console.log(image)
+    const data = new FormData();
+    data.append('file',image)
+    data.append('upload_preset',"instagramclone")
+    data.append('cloud_name',"ravisharma")
+    await fetch("https://api.cloudinary.com/v1_1/ravisharma/image/upload",{
+      method:'post',
+      body:data
+    }).then(res=> res.json())
+      .then(data=>{
+        console.log(data.url)
+        setPostImage(data.url);
+        console.log(`I have saved the url as ===>: ${postimage}`)
+    }).catch((err)=> console.log(err));
+    
   }
   return (
     <div
