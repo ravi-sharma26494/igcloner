@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-
+import { BACKENDURL } from "../../utils/utils";
 const Home = () => {
     const [data ,setData] = useState([])
     useEffect(()=>{
-        fetch('/allpost',{
+        fetch(`${BACKENDURL}/allpost`,{
             headers:{
                 'Authorization': "Bearer " + localStorage.getItem('jwt')
             }
@@ -18,8 +18,9 @@ const Home = () => {
         {
             data.map((item) =>{
                 return(
-                    <div className='card home-card' key = {item.id}>
-                    <h5>{item.postedBy.name}</h5>
+                   
+                    <div className='card home-card' key = {item._id}>
+                    <h5>{item.postedBy?.name}</h5>
                     <div className='card-image'>
                         <img src={item.photo} alt="post"/>
                     </div>

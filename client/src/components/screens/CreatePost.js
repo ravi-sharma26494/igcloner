@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import M from 'materialize-css';
+import { BACKENDURL } from "../../utils/utils";
+
 const CreatePost = () => {
   const navigate = useNavigate()
   const [title, setTitle] = useState("");
@@ -10,7 +12,7 @@ const CreatePost = () => {
 
   useEffect(()=>{
     if(postimage){
-      fetch("/createpost", {
+      fetch(`${BACKENDURL}/createpost`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

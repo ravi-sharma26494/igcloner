@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import M from 'materialize-css';
-
+import { BACKENDURL } from "../../utils/utils";
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -10,7 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
 
   const PostData = () => {
-    fetch("/signup", {
+    fetch(`${BACKENDURL}/signup`, {
       method: "post",
       headers: {
         "Content-Type": "application/json"
