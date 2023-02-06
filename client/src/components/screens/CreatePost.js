@@ -24,7 +24,7 @@ const CreatePost = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
+          // console.log(data)
           if(data.error){
             return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
           } else{
@@ -39,7 +39,7 @@ const CreatePost = () => {
   },[postimage])   
 
   const postDetails = async()=>{
-    console.log(image)
+    // console.log(image)
     const data = new FormData();
     data.append('file',image)
     data.append('upload_preset',"instagramclone")
@@ -49,9 +49,9 @@ const CreatePost = () => {
       body:data
     }).then(res=> res.json())
       .then(data=>{
-        console.log(data.url)
+        // console.log(data.url)
         setPostImage(data.url);
-        console.log(`I have saved the url as ===>: ${postimage}`)
+        // console.log(`I have saved the url as ===>: ${postimage}`)
     }).catch((err)=> console.log(err));
     
   }

@@ -9,16 +9,16 @@ const Home = () => {
             }
         }).then(res=> res.json())
             .then(result=>{
-                console.log(result);
+                // console.log(result);
                 setData(result.posts)
             })
     },[])
   return (
     <div className='home'>
         {
-            data.map((item, key) =>{
+            data.map((item) =>{
                 return(
-                    <div className='card home-card' key = {key}>
+                    <div className='card home-card' key = {item.id}>
                     <h5>{item.postedBy.name}</h5>
                     <div className='card-image'>
                         <img src={item.photo} alt="post"/>

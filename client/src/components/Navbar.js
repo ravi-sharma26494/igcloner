@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
+import M from 'materialize-css';
+
 
 const Navbar = () => {
   const { state, dispatch } = useContext(UserContext);
-  
+  const navigate = useNavigate("")  
   const renderList = () => {
     if (state) {
       return [
@@ -15,7 +17,10 @@ const Navbar = () => {
           className="btn waves-effect waves-light #4fc3f7 light-blue lighten-2"
           onClick={() => {
             localStorage.clear()
+            navigate('/login');
+            M.toast({html:"Logout Successfull..", classes:'#81c784 green lighten-2'})
             dispatch({type:'CLEAR'})
+            
           }}
         >
           Logout
