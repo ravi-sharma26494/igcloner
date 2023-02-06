@@ -14,7 +14,7 @@ router.get('/allpost', requireLogin, (req,res)=>{
 
 router.post('/createpost',requireLogin,(req,res)=>{
     const{title, body, pic} = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     console.log(`This is your data from request: ${req.body}`)
     //debugger
     if(!title || !body || !pic){
