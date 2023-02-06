@@ -9,8 +9,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
-  const PostData = () => {
-    fetch(`${BACKENDURL}/signin`, {
+  const PostData = async () => {
+    await fetch(`${BACKENDURL}/signin`, {
       method: "post",
       headers: {
         "Content-Type": "application/json"
