@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BACKENDURL } from "../../utils/utils";
+
 const Home = () => {
     const [data ,setData] = useState([])
     useEffect(()=>{
