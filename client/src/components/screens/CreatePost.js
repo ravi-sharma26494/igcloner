@@ -11,58 +11,34 @@ const CreatePost = () => {
   const [postimage, setPostImage] = useState("");
 
   useEffect(()=>{
-    async function uploadPosts(){
-      if(postimage){
-        const uploadData = await fetch(`${BACKENDURL}/createpost`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer "+ localStorage.getItem('jwt')
-          },
-          body: JSON.stringify({
-            title: title,
-            body: body,
-            pic:postimage
-          })
-        });
-        const data = await uploadData.json();
-        if(data.error){
-          return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
-        } else{
-          M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
-          navigate('/')
-        }
-      }   
-    };
-    uploadPosts();
-    // if(postimage){
-    //   fetch(`${BACKENDURL}/createpost`, {
-    //     method: "post",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Authorization": "Bearer "+ localStorage.getItem('jwt')
-    //     },
-    //     body: JSON.stringify({
-    //       title: title,
-    //       body: body,
-    //       pic:postimage
-    //     })
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       // console.log(data)
-    //       if(data.error){
-    //         return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
-    //       } else{
-    //         M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
-    //         navigate('/')
-    //       }
-    //     })
-    //     .catch(err=>{
-    //       console.log(err)
-    //     })
-    
-  },[postimage]);   
+    if(postimage){
+      fetch(`${BACKENDURL}/createpost`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer "+ localStorage.getItem('jwt')
+        },
+        body: JSON.stringify({
+          title: title,
+          body: body,
+          pic:postimage
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data)
+          if(data.error){
+            return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+          } else{
+            M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
+            navigate('/')
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    }
+  },[postimage])   
 
   const postDetails = async()=>{
     // console.log(image)

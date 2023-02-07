@@ -7,7 +7,7 @@ import M from 'materialize-css';
 const Navbar = () => {
   const { state, dispatch } = useContext(UserContext);
   const navigate = useNavigate("")  
-  const renderList = () => {
+  const renderList = async () => {
     if (state) {
       return [
         <li><Link to="/profile">Profile</Link></li>,

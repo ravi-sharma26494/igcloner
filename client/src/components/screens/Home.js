@@ -4,15 +4,19 @@ import { BACKENDURL } from "../../utils/utils";
 const Home = () => {
     const [data ,setData] = useState([])
     useEffect(()=>{
-        fetch(`${BACKENDURL}/allpost`,{
-            headers:{
-                'Authorization': "Bearer " + localStorage.getItem('jwt')
-            }
-        }).then(res=> res.json())
-            .then(result=>{
-                // console.log(result);
-                setData(result.posts)
-            })
+        const fetchData = async ()=>{
+
+            await fetch(`${BACKENDURL}/allpost`,{
+                headers:{
+                    'Authorization': "Bearer " + localStorage.getItem('jwt')
+                }
+            }).then(res=> res.json())
+                .then(result=>{
+                    // console.log(result);
+                    setData(result.posts)
+                })
+        }
+        fetchData();
     },[])
   return (
     <div className='home'>
