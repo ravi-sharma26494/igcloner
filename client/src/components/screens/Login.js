@@ -9,32 +9,57 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
-  const PostData = () => {
-    fetch(`${BACKENDURL}/signin`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        if(data.error){
-          M.toast({html:data.error, classes:"#e57373 red lighten-2"})
-        } else{
-          localStorage.setItem('jwt',data.token)
+  const PostData = async() => {
+    try {
+      const fetchedData = await fetch(`${BACKENDURL}/signin`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const data = await fetchedData.json();
+      if(data.error){
+        return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+      } else{
+        localStorage.setItem('jwt',data.token)
           localStorage.setItem('user',JSON.stringify(data.user))
           dispatch({type:"USER", payload:data.user})
           M.toast({html:'Sign in Successful.', classes:'#81c784 green lighten-2'})
           navigate('/');
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // fetch(`${BACKENDURL}/signin`, {
+    //   method: "post",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     email: email,
+    //     password: password
+    //   })
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     // console.log(data);
+    //     if(data.error){
+    //       M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+    //     } else{
+    //       localStorage.setItem('jwt',data.token)
+    //       localStorage.setItem('user',JSON.stringify(data.user))
+    //       dispatch({type:"USER", payload:data.user})
+    //       M.toast({html:'Sign in Successful.', classes:'#81c784 green lighten-2'})
+    //       navigate('/');
+    //     }
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   })
   };
 
   return (

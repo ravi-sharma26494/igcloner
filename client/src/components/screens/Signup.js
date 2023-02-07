@@ -9,8 +9,8 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const PostData = () => {
-    fetch(`${BACKENDURL}/signup`, {
+  const PostData = async () => {
+    const fetchedData = await fetch(`${BACKENDURL}/signup`, {
       method: "post",
       headers: {
         "Content-Type": "application/json"
@@ -20,18 +20,26 @@ const Signup = () => {
         email: email,
         password: password
       })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if(data.error){
-          M.toast({html:data.error, classes:"#e57373 red lighten-2"})
-        } else{
-          M.toast({html:data.message, classes:'#81c784 green lighten-2'})
-          navigate('/login')
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
+    });
+    const response = await fetchedData.json();
+    if(response.error){
+      return M.toast({html:response.error, classes:"#e57373 red lighten-2"});
+    } else{
+      M.toast({html:response.message, classes:'#81c784 green lighten-2'})
+      navigate('/login');
+    }
+    // if(response)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if(data.error){
+    //       M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+    //     } else{
+    //       M.toast({html:data.message, classes:'#81c784 green lighten-2'})
+    //       navigate('/login')
+    //     }
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   })
   };
   return (
     <div className="mycard">

@@ -11,50 +11,79 @@ const CreatePost = () => {
   const [postimage, setPostImage] = useState("");
 
   useEffect(()=>{
-    if(postimage){
-      fetch(`${BACKENDURL}/createpost`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer "+ localStorage.getItem('jwt')
-        },
-        body: JSON.stringify({
-          title: title,
-          body: body,
-          pic:postimage
-        })
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data)
-          if(data.error){
-            return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
-          } else{
-            M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
-            navigate('/')
-          }
-        })
-        .catch(err=>{
-          console.log(err)
-        })
-    }
-  },[postimage])   
+    async function uploadPosts(){
+      if(postimage){
+        const uploadData = await fetch(`${BACKENDURL}/createpost`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer "+ localStorage.getItem('jwt')
+          },
+          body: JSON.stringify({
+            title: title,
+            body: body,
+            pic:postimage
+          })
+        });
+        const data = await uploadData.json();
+        if(data.error){
+          return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+        } else{
+          M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
+          navigate('/')
+        }
+      }   
+    };
+    uploadPosts();
+    // if(postimage){
+    //   fetch(`${BACKENDURL}/createpost`, {
+    //     method: "post",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "Authorization": "Bearer "+ localStorage.getItem('jwt')
+    //     },
+    //     body: JSON.stringify({
+    //       title: title,
+    //       body: body,
+    //       pic:postimage
+    //     })
+    //   })
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       // console.log(data)
+    //       if(data.error){
+    //         return M.toast({html:data.error, classes:"#e57373 red lighten-2"})
+    //       } else{
+    //         M.toast({html:'Upload Successful', classes:'#81c784 green lighten-2'})
+    //         navigate('/')
+    //       }
+    //     })
+    //     .catch(err=>{
+    //       console.log(err)
+    //     })
+    
+  },[postimage]);   
 
   const postDetails = async()=>{
     // console.log(image)
     const data = new FormData();
-    data.append('file',image)
-    data.append('upload_preset',"instagramclone")
-    data.append('cloud_name',"ravisharma")
-    await fetch("https://api.cloudinary.com/v1_1/ravisharma/image/upload",{
+    data.append('file',image);
+    data.append('upload_preset',"instagramclone");
+    data.append('cloud_name',"ravisharma");
+
+   const fetchedData =  await fetch("https://api.cloudinary.com/v1_1/ravisharma/image/upload",{
       method:'post',
       body:data
-    }).then(res=> res.json())
-      .then(data=>{
-        // console.log(data.url)
-        setPostImage(data.url);
-        // console.log(`I have saved the url as ===>: ${postimage}`)
-    }).catch((err)=> console.log(err));
+    });
+    const response = await fetchedData.json();
+    // console.log(response);
+    await setPostImage(response.secure_url);
+    // .then(res=> res.json())
+    //   .then(data=>{
+    //     // console.log(data.url)
+    //     setPostImage(data.url);
+    //     // console.log(`I have saved the url as ===>: ${postimage}`)
+    // }).catch((err)=> console.log(err));
     
   }
   return (
